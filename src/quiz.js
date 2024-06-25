@@ -43,15 +43,27 @@ class Quiz {
     }
   }
 
-  // 1. constructor (questions, timeLimit, timeRemaining)
+  filterQuestionsByDifficulty(difficulty) {
+    // si la dificultad de la pregunta es diferente de 1, 2,3  no funciona
+    if(difficulty !== 1 && difficulty !== 2 && difficulty !== 3){
+      return;
+    }
+    let preguntasSegunSuGradoDificultad = this. questions.filter((eachQuestion) => {
+      return eachQuestion.difficulty === difficulty
+     
+    })
+     
+    this.questions = preguntasSegunSuGradoDificultad;
+  }
 
-  // 2. getQuestion()
+  averageDifficulty() {
+    
+    let mediaDeDificultad = this.questions.reduce((acc, eachD) => {
+      return (acc + eachD.difficulty) 
 
-  // 3. moveToNextQuestion()
+    }, 0);
+    return mediaDeDificultad / this.questions.length
+  }
 
-  // 4. shuffleQuestions()
-
-  // 5. checkAnswer(answer)
-
-  // 6. hasEnded()
 }
+
