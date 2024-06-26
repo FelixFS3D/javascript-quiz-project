@@ -138,9 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const opicionesParaPreguntas = question.choices;
 
     opicionesParaPreguntas.forEach((eachChoices) => {
-      const eleccionRadio = document.createElement("input");
-      eleccionRadio.innerHTML;
-      
+      const eleccionRadio = document.createElement("div");
+      eleccionRadio.innerHTML =`<input type="radio" name="choice" value="${eachChoices}">
+      <label>${eachChoices}</label>
+    <br>` ;
+   choiceContainer.append(eleccionRadio)
       
     });
     // Each choice should be displayed as a radio input element with a label:
