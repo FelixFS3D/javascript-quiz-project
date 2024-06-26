@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     opicionesParaPreguntas.forEach((eachChoices) => {
       const eleccionRadio = document.createElement("input");
-      eleccionRadio.innerHTML = 
+      eleccionRadio.innerHTML;
       
       
     });
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Hint 3: You can use the `element.appendChild()` method to append an element to the choices container.
     // Hint 4: You can use the `element.innerText` property to set the inner text of an element.
   
-
+  }
   function nextButtonHandler() {
     let selectedAnswer; // A variable to store the selected answer value
 
