@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const choiceContainer = document.querySelector("#choices");
   const nextButton = document.querySelector("#nextButton");
 
+  const restartBtn = document.querySelector("#restartButton")
+
   // End view elements
   const resultContainer = document.querySelector("#result");
 
@@ -24,23 +26,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Array with the quiz questions
   const questions = [
-    new Question("What is 2 + 2?", ["3", "4", "5", "6"], "4", 1),
+    new Question("¿Cuántas veces ha dicho Jorge la palabra PATATA en el bootcamp?", ["10", "100", "incontables", "2"], "incontables", 1),
     new Question(
-      "What is the capital of France?",
-      ["Miami", "Paris", "Oslo", "Rome"],
-      "Paris",
+      "¿Dónde esta Iñigo?",
+      ["Bilbao", "Marbella", "Oslo", "Marsella"],
+      "Marsella",
       1
     ),
     new Question(
-      "Who created JavaScript?",
-      ["Plato", "Brendan Eich", "Lea Verou", "Bill Gates"],
-      "Brendan Eich",
+      "¿Cuánto vale un juego de Pong?",
+      ["gratis", "7.500", "10", "5"],
+      "7.500",
       2
     ),
     new Question(
-      "What is the mass–energy equivalence equation?",
-      ["E = mc^2", "E = m*c^2", "E = m*c^3", "E = m*c"],
-      "E = mc^2",
+      "¿Qué capacidad se pierde cuando inicias el bootcamp de Ironhack?",
+      ["el habla", "descansar", "dormir sin soñar en codigo", "crear bucles"],
+      "el habla",
       3
     ),
     // Add more questions here
@@ -71,12 +73,43 @@ document.addEventListener("DOMContentLoaded", () => {
   showQuestion();
 
   /************  TIMER  ************/
+  
+  let timer = setInterval(() =>{
+    
+    quiz.timeRemaining--
+    const minutes = Math.floor(quiz.timeRemaining / 60)
+    .toString()
+    .padStart(2, "0");
+    const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+    if(quiz.timeRemaining === 0){
+      clearInterval(timer)
+      showResults()
+    }
 
-  let timer;
+  }, 1000)
+ 
 
   /************  EVENT LISTENERS  ************/
 
   nextButton.addEventListener("click", nextButtonHandler);
+  restartBtn.addEventListener("click", () => {
+      quiz.timeRemaining = 120;
+      quiz.correctAnswers = 0;
+      quiz.currentQuestionIndex = 0;
+    // queremos que el timeremaining pase de 0 a 120 
+    //cambiar el current question index a 0 
+    // empezar el juego de nuevo, mostrar la pagina de preguntas 
+   // cambia el correctAnswer a 0 
+    //  esconder la pagina de resultados end view
+    quizView.style.display = "flex";
+    endView.style.display = "none";
+    showQuestion()
+
+
+
+  })
+
 
   /************  FUNCTIONS  ************/
 
@@ -163,11 +196,24 @@ document.addEventListener("DOMContentLoaded", () => {
     // YOUR CODE HERE:
     //
     // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
+     let allChoices = document.querySelectorAll("#choices input")
+     console.log(allChoices);
+
+     allChoices.forEach((elem) =>{
+       if(elem.checked === true ){
+        selectedAnswer = elem.value 
+      }
+
+
+     })
 
     // 2. Loop through all the choice elements and check which one is selected
     // Hint: Radio input elements have a property `.checked` (e.g., `element.checked`).
     //  When a radio input gets selected the `.checked` property will be set to true.
     //  You can use check which choice was selected by checking if the `.checked` property is true.
+     quiz.checkAnswer(selectedAnswer)
+     quiz.moveToNextQuestion()
+     showQuestion()
 
     // 3. If an answer is selected (`selectedAnswer`), check if it is correct and move to the next question
     // Check if selected answer is correct by calling the quiz method `checkAnswer()` with the selected answer.
@@ -185,6 +231,6 @@ document.addEventListener("DOMContentLoaded", () => {
     endView.style.display = "flex";
 
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
-    resultContainer.innerText = `You scored 1 out of 1 correct answers!`; // This value is hardcoded as a placeholder
+    resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length}correct answers!`; // This value is hardcoded as a placeholder
   }
 });
